@@ -1,0 +1,6 @@
+IndentWidth: 2
+AccessModifierOffset: -2
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: true
+IndentCaseLabels: false
+ColumnLimit: 0
