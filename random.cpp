@@ -94,7 +94,7 @@ public:
     for (int i = 1; i < n; i++) {
       int j = get(0, i + 1);
       if (i != j) {
-        std::swap(s[i], s[j]);
+        std::swap(ary[i], ary[j]);
       }
     }
   }
