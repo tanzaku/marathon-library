@@ -41,3 +41,14 @@ vector<int> split_int(string s, char delimiter)
   }
   return result;
 }
+
+template <typename T>
+string join(T &s, char delimiter)
+{
+  string result;
+  for (int i = 0; i < (int)s.size(); i++) {
+    if (i != 0) result += delimiter;
+    result += to_string(s[i]);
+  }
+  return result;
+}

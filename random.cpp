@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdint>
 #include <tuple>
+
 class XorShiftL
 {
   static const int LOG_CACHE_SIZE = 0x10000;
@@ -31,20 +32,20 @@ public:
   }
 
   // [0, n)
-  int get(int n) { return xor64() % n; }
+  int nextInt(int n) { return xor64() % n; }
 
   // [low, high)
-  int get(int low, int high) { return xor64() % (high - low) + low; }
-  double getDouble() { return xor64() / double(std::numeric_limits<std::uint64_t>::max()); }
+  int nextInt(int low, int high) { return xor64() % (high - low) + low; }
+  double nextDouble() { return xor64() / double(std::numeric_limits<std::uint64_t>::max()); }
 
   /**
    * 2つの相異なる数をランダムに取得する
    * get<0>(result) < get<1>(result) が保証されている
    */
-  std::tuple<int, int> get2(int low, int high)
+  std::tuple<int, int> nextIntPair(int low, int high)
   {
-    int i = get(low, high);
-    int j = get(low, high - 1);
+    int i = nextInt(low, high);
+    int j = nextInt(low, high - 1);
     if (j >= i)
       j++;
     else
@@ -56,10 +57,10 @@ public:
    * 2つの相異なる数をランダムに取得する
    * get<0>(result) < get<1>(result) は保証されない
    */
-  std::tuple<int, int> getUnordered2(int low, int high)
+  std::tuple<int, int> nextIntUnorderedPair(int low, int high)
   {
-    int i = get(low, high);
-    int j = get(low, high - 1);
+    int i = nextInt(low, high);
+    int j = nextInt(low, high - 1);
     if (j >= i)
       j++;
     return std::make_tuple(i, j);
@@ -81,7 +82,7 @@ public:
   void shuffle(T &s)
   {
     for (int i = 1; i < (int)s.size(); i++) {
-      int j = get(0, i + 1);
+      int j = nextInt(0, i + 1);
       if (i != j) {
         std::swap(s[i], s[j]);
       }
@@ -92,7 +93,7 @@ public:
   void shuffle(T (&ary)[n])
   {
     for (int i = 1; i < n; i++) {
-      int j = get(0, i + 1);
+      int j = nextInt(0, i + 1);
       if (i != j) {
         std::swap(ary[i], ary[j]);
       }
