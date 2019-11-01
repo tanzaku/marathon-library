@@ -23,6 +23,7 @@ public:
  * rdtscを用いた高速なタイマー
  * サーバーのCPU周波数がわからない、もしくはジャッジサーバーのインスタンスが変更になる可能性がある場合は使わない方がいい
  */
+const double CPU_FREQ_ATCODER = 1.0 / (28 * 100 * 1000);
 const double CPU_FREQ_TOPCODER = 1.0 / (24 * 100 * 1000);
 const double CPU_FREQ = CPU_FREQ_TOPCODER;
 
