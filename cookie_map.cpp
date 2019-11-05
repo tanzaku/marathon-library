@@ -7,6 +7,7 @@ using namespace std;
  * O(1)でクリアできるマップ
  * キーが[0,n)の整数でなくてはならない
  */
+
 template <typename T>
 class CookieMap
 {
@@ -16,7 +17,15 @@ class CookieMap
   T defaultValue;
 
 public:
-  CookieMap(int n, T defaultValue_) : gid(1), id(n), val(n), defaultValue(defaultValue_) {}
+  void init(int n, T defaultValue_)
+  {
+    gid = 0;
+    id.resize(n);
+    val.resize(n);
+    defaultValue = defaultValue_;
+    fill(id.begin(), id.end(), 0);
+  }
+
   bool contains(int i) const { return id[i] == gid; }
   void clear() { gid++; }
   void set(int i, T v)
