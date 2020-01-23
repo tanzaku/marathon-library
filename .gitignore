@@ -33,3 +33,4 @@
 
 *.dSYM/
 base.cpp
+.DS_Store
