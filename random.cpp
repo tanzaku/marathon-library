@@ -55,12 +55,40 @@ public:
 
   /**
    * 2つの相異なる数をランダムに取得する
+   * get<0>(result) < get<1>(result) が保証されている
+   */
+  std::tuple<int, int> nextIntPair(int n)
+  {
+    int i = nextInt(n);
+    int j = nextInt(n - 1);
+    if (j >= i)
+      j++;
+    else
+      std::swap(i, j);
+    return std::make_tuple(i, j);
+  }
+
+  /**
+   * 2つの相異なる数をランダムに取得する
    * get<0>(result) < get<1>(result) は保証されない
    */
   std::tuple<int, int> nextIntUnorderedPair(int low, int high)
   {
     int i = nextInt(low, high);
     int j = nextInt(low, high - 1);
+    if (j >= i)
+      j++;
+    return std::make_tuple(i, j);
+  }
+
+  /**
+   * 2つの相異なる数をランダムに取得する
+   * get<0>(result) < get<1>(result) は保証されない
+   */
+  std::tuple<int, int> nextIntUnorderedPair(int n)
+  {
+    int i = nextInt(n);
+    int j = nextInt(n - 1);
     if (j >= i)
       j++;
     return std::make_tuple(i, j);
