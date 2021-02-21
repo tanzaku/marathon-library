@@ -1,9 +1,9 @@
 
 #include <cmath>
 #include <cstdint>
+#include <queue>
 #include <tuple>
 #include <vector>
-#include <queue>
 
 using namespace std;
 
@@ -81,3 +81,40 @@ struct Graph {
     }
   }
 };
+
+void spfa()
+{
+  for (int s = 0; s < int(g.size()); s++) {
+    auto &d = dist[s];
+    fill(begin(d), end(d), inf);
+    d[s] = 0;
+    que.push_back(s);
+    for (int i = 0; i < int(que.size()); i++) {
+      const int v = que[i];
+      inQue[v] = 0;
+      for (auto pr : g[v]) {
+        int t = get<0>(pr);
+        int c = get<1>(pr);
+        if (d[t] > d[v] + c) {
+          d[t] = d[v] + c;
+          if (!inQue[t]) {
+            inQue[t] = 1;
+            que.push_back(t);
+          }
+        }
+      }
+    }
+    que.clear();
+  }
+}
+
+void warshallFloyd(vector<vector<int>> &d)
+{
+  for (int k = 0; k < int(d.size()); k++) {
+    for (int i = 0; i < int(d.size()); i++) {
+      for (int j = 0; j < int(d.size()); j++) {
+        d[i][j] = std::min(d[i][j], d[i][k] + d[k][j]);
+      }
+    }
+  }
+}
