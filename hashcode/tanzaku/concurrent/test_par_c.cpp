@@ -24,7 +24,7 @@ struct RealTimeManager {
 
 int main()
 {
-  tanzaku::par_c::ThreadPoolRAII raii;
+  tanzaku::concurrent::par_c::ThreadPoolRAII raii;
 
   std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
@@ -34,7 +34,7 @@ int main()
 
     std::vector<std::future<std::pair<double, int>>> futures;
     for (int i = 0; i < 16; i++) {
-      auto future = tanzaku::par_c::enqueue([n, i] {
+      auto future = tanzaku::concurrent::par_c::enqueue([n, i] {
         auto res = std::make_pair(-1.0, 0);
         for (int j = n * i / 16; j < n * (i + 1) / 16; j++) {
           res = std::max(res, std::make_pair(std::sin(j), j));
@@ -57,13 +57,13 @@ int main()
   {
     RealTimeManager tm;
 
-    auto ranges = tanzaku::par_c::split(n);
+    auto ranges = tanzaku::concurrent::par_c::split(n);
 
     auto reducer = [](std::pair<double, int> lhs, std::pair<double, int> rhs) {
       return std::max(lhs, rhs);
     };
 
-    auto mapper = [&](const tanzaku::par_c::Range &r) {
+    auto mapper = [&](const tanzaku::concurrent::par_c::Range &r) {
       auto res = std::make_pair(-1.0, 0);
       for (int i = r.from; i < r.to; i++) {
         res = reducer(res, std::make_pair(std::sin(i), i));
@@ -71,7 +71,7 @@ int main()
       return res;
     };
 
-    auto res = tanzaku::par_c::map_reduce(mapper, reducer, ranges);
+    auto res = tanzaku::concurrent::par_c::map_reduce(mapper, reducer, ranges);
 
     std::cerr << __LINE__ << " " << res.first << " " << res.second << " "
               << tm.get_time() << std::endl;
@@ -80,7 +80,7 @@ int main()
   {
     RealTimeManager tm;
 
-    std::vector<uint32_t> seeds(tanzaku::par_c::get_num_threads());
+    std::vector<uint32_t> seeds(tanzaku::concurrent::par_c::get_num_threads());
     std::iota(seeds.begin(), seeds.end(), 0);
 
     auto runner = [&](uint32_t seed) {
@@ -91,7 +91,7 @@ int main()
       std::cerr << __LINE__ << " " << seed << " " << tm.get_time() << std::endl;
     };
 
-    tanzaku::par_c::run(runner, seeds);
+    tanzaku::concurrent::par_c::run(runner, seeds);
 
     std::cerr << __LINE__ << " " << tm.get_time() << std::endl;
   }

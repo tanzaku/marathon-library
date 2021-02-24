@@ -12,6 +12,8 @@
 
 namespace tanzaku
 {
+namespace concurrent
+{
 namespace par_c
 {
 
@@ -115,7 +117,7 @@ auto map_reduce(F mapper, R reducer, const std::vector<T> &x) -> typename std::r
   auto mapped_values = map(mapper, x);
 
   for (int i = 1; i < int(mapped_values.size()); i++) {
-    mapped_values[i] = reducer(mapped_values[0], mapped_values[i]);
+    mapped_values[0] = reducer(mapped_values[0], mapped_values[i]);
   }
 
   return mapped_values[0];
@@ -171,6 +173,7 @@ struct ThreadPoolRAII {
 };
 
 } // namespace par_c
+} // namespace concurrent
 } // namespace tanzaku
 
 #endif // PAR_C_H
